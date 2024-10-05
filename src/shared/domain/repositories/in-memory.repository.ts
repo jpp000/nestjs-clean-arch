@@ -38,7 +38,7 @@ export abstract class InMemoryRepository<E extends Entity>
     const entity = this.items.find(item => item.id === _id)
 
     if (!entity) {
-      throw new NotFoundError(' Entity not found')
+      throw new NotFoundError('Entity not found')
     }
 
     return entity
