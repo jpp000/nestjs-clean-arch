@@ -1,9 +1,9 @@
 import { Entity } from '../entities/entity'
 import { InMemoryRepository } from './in-memory.repository'
 import {
-  SearchableRepositoryInterface,
   SearchParams,
   SearchResult,
+  SearchableRepositoryInterface,
 } from './searchable-repository-contracts'
 
 export abstract class InMemorySearchableRepository<E extends Entity>
@@ -14,17 +14,16 @@ export abstract class InMemorySearchableRepository<E extends Entity>
 
   async search(props: SearchParams): Promise<SearchResult<E>> {
     const itemsFiltered = await this.applyFilter(this.items, props.filter)
-    const itemSorted = await this.applySort(
+    const itemsSorted = await this.applySort(
       itemsFiltered,
       props.sort,
       props.sortDir,
     )
     const itemsPaginated = await this.applyPaginate(
-      itemSorted,
+      itemsSorted,
       props.page,
       props.perPage,
     )
-
     return new SearchResult({
       items: itemsPaginated,
       total: itemsFiltered.length,
@@ -46,19 +45,16 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     sort: string | null,
     sortDir: string | null,
   ): Promise<E[]> {
-    if (!sort || this.sortableFields.includes(sort)) {
+    if (!sort || !this.sortableFields.includes(sort)) {
       return items
     }
-
     return [...items].sort((a, b) => {
       if (a.props[sort] < b.props[sort]) {
         return sortDir === 'asc' ? -1 : 1
       }
-
       if (a.props[sort] > b.props[sort]) {
         return sortDir === 'asc' ? 1 : -1
       }
-
       return 0
     })
   }
@@ -70,7 +66,6 @@ export abstract class InMemorySearchableRepository<E extends Entity>
   ): Promise<E[]> {
     const start = (page - 1) * perPage
     const limit = start + perPage
-
     return items.slice(start, limit)
   }
 }
