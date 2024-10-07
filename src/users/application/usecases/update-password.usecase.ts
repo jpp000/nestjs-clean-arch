@@ -28,7 +28,7 @@ export namespace UpdatePasswordUseCase {
         )
       }
 
-      const checkOldPassword = this.hashProvider.compareHash(
+      const checkOldPassword = await this.hashProvider.compareHash(
         input.oldPassword,
         entity.password,
       )
