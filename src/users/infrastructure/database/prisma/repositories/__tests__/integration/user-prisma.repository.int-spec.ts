@@ -72,6 +72,13 @@ describe('UserPrismaRepository integration tests', () => {
     expect(entities).toStrictEqual([entity])
   })
 
+  it('should throw error on update when a entity is not found', async () => {
+    const entity = new UserEntity(UserDataBuilder({}))
+    expect(() => sut.update(entity)).rejects.toThrow(
+      new NotFoundError(`UserModel not found using ID ${entity.id}`),
+    )
+  })
+
   it('should update entity', async () => {
     const entity = new UserEntity(UserDataBuilder({}))
     await prismaService.user.create({
@@ -91,11 +98,30 @@ describe('UserPrismaRepository integration tests', () => {
     expect(output.name).toBe('new name')
   })
 
-  it('should throw error on update when a entity is not found', async () => {
+  it('should throw error on delete when a entity is not found', async () => {
     const entity = new UserEntity(UserDataBuilder({}))
-    expect(() => sut.update(entity)).rejects.toThrow(
+    expect(() => sut.delete(entity.id)).rejects.toThrow(
       new NotFoundError(`UserModel not found using ID ${entity.id}`),
     )
+  })
+
+  it('should delete entity', async () => {
+    const entity = new UserEntity(UserDataBuilder({}))
+    await prismaService.user.create({
+      data: entity,
+    })
+
+    await sut.delete(entity.id)
+
+    const output1 = await sut.findAll()
+    const output2 = await prismaService.user.findUnique({
+      where: {
+        id: entity.id,
+      },
+    })
+
+    expect(output2).toBeNull()
+    expect(output1).toHaveLength(0)
   })
 
   describe('search method tests', () => {
