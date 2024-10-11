@@ -72,6 +72,32 @@ describe('UserPrismaRepository integration tests', () => {
     expect(entities).toStrictEqual([entity])
   })
 
+  it('should update entity', async () => {
+    const entity = new UserEntity(UserDataBuilder({}))
+    await prismaService.user.create({
+      data: entity,
+    })
+
+    entity.update('new name')
+
+    await sut.update(entity)
+
+    const output = await prismaService.user.findUnique({
+      where: {
+        id: entity.id,
+      },
+    })
+
+    expect(output.name).toBe('new name')
+  })
+
+  it('should throw error on update when a entity is not found', async () => {
+    const entity = new UserEntity(UserDataBuilder({}))
+    expect(() => sut.update(entity)).rejects.toThrow(
+      new NotFoundError(`UserModel not found using ID ${entity.id}`),
+    )
+  })
+
   describe('search method tests', () => {
     it('should apply only pagination when the other params are null', async () => {
       const createdAt = new Date()
