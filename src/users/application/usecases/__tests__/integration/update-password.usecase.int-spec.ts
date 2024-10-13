@@ -6,7 +6,6 @@ import { DatabaseModule } from '@/shared/infraestructure/database/database.modul
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
-import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { UpdatePasswordUseCase } from '../../update-password.usecase'
 import { HashProvider } from '@/shared/application/providers/hash-provider'
 import { BcryptHashProvider } from '@/users/infrastructure/providers/hash-provider/bcrypt-hash.provider'
