@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npx dotenvcli -e .env.test -- jest --runInBand --config ./jest.e2e.config.json",
+    "test:e2e": "npx dotenv-cli -e .env.test -- jest --runInBand --config ./jest.e2e.config.ts",
     "migrate": "npx dotenv-cli -e .env.development -- npx prisma migrate dev --schema ./src/shared/infraestructure/database/prisma/schema.prisma"
   },
   "dependencies": {
