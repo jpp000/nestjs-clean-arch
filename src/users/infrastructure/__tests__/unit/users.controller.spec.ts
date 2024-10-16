@@ -10,7 +10,10 @@ import { UpdatePasswordUseCase } from '@/users/application/usecases/update-passw
 import { UpdatePasswordDto } from '../../dto/update-password.dto'
 import { GetUserUseCase } from '@/users/application/usecases/getuser.usecase'
 import { ListUsersUseCase } from '@/users/application/usecases/listusers.usecase'
-import { UserPresenter } from '../../presenters/user.presenter'
+import {
+  UserColletionPresenter,
+  UserPresenter,
+} from '../../presenters/user.presenter'
 
 describe('UsersController unit tests', () => {
   let sut: UsersController
@@ -168,9 +171,10 @@ describe('UsersController unit tests', () => {
       perPage: 1,
     }
 
-    const result = await sut.search(searchParams)
+    const presenter = await sut.search(searchParams)
 
-    expect(result).toStrictEqual(output)
+    expect(presenter).toBeInstanceOf(UserColletionPresenter)
+    expect(presenter).toEqual(new UserColletionPresenter(output))
     expect(mockListUsersUseCase.execute).toHaveBeenCalledWith(searchParams)
   })
 })
