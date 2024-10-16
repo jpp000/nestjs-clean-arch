@@ -2,15 +2,6 @@ import { instanceToPlain } from 'class-transformer'
 import { PaginationPresenter } from '../../pagination.presenter'
 
 describe('PaginationPresenter unit tests', () => {
-  const createdAt = new Date()
-  const props = {
-    id: '6781a562-2727-4390-81ed-e1d128e267d6',
-    name: 'a',
-    email: 'a@a.com',
-    password: '1234',
-    createdAt,
-  }
-
   describe('constructor', () => {
     it('should set values', () => {
       const sut = new PaginationPresenter({
