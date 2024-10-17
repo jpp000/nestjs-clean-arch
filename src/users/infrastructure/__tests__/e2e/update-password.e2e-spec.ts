@@ -122,8 +122,12 @@ describe('UsersController e2e tests', () => {
       const res = await request(app.getHttpServer())
         .patch(`/users/${entity.id}`)
         .send(updatePasswordDto)
-
-      console.log(res.body)
+        .expect(422)
+        .expect({
+          statusCode: 422,
+          error: 'Invalid Password Error',
+          message: 'Old password does not match',
+        })
     })
   })
 })
