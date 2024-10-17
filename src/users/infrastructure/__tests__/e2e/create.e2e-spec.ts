@@ -11,6 +11,8 @@ import request from 'supertest'
 import { UsersController } from '../../users.controller'
 import { instanceToPlain } from 'class-transformer'
 import { applyGlobalConfig } from '@/global-config'
+import { UserEntity } from '@/users/domain/entities/user.entity'
+import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 
 describe('UsersController e2e tests', () => {
   let app: INestApplication
@@ -131,6 +133,21 @@ describe('UsersController e2e tests', () => {
 
       expect(res.body.error).toBe('Unprocessable Entity')
       expect(res.body.message).toEqual(['property fake should not exist'])
+    })
+
+    it('should return error with 409 when the email is duplicated', async () => {
+      const entity = new UserEntity(UserDataBuilder({ ...signupDto }))
+      await repository.insert(entity)
+
+      const res = await request(app.getHttpServer())
+        .post('/users')
+        .send(Object.assign(signupDto))
+        .expect(409)
+        .expect({
+          statusCode: 409,
+          error: 'Conflict',
+          message: 'Email address already used',
+        })
     })
   })
 })
