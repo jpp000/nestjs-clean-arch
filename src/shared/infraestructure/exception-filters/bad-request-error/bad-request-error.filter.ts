@@ -2,8 +2,8 @@ import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common'
 import { FastifyReply } from 'fastify'
 
-@Catch()
-export class BadRequestErrorFilter<T> implements ExceptionFilter {
+@Catch(BadRequestError)
+export class BadRequestErrorFilter implements ExceptionFilter {
   catch(exception: BadRequestError, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<FastifyReply>()
