@@ -7,8 +7,6 @@ import { setupPrismaTests } from '@/shared/infraestructure/database/prisma/testi
 import { EnvConfigModule } from '@/shared/infraestructure/env-config/env-config.module'
 import { DatabaseModule } from '@/shared/infraestructure/database/database.module'
 import request from 'supertest'
-import { UsersController } from '../../users.controller'
-import { instanceToPlain } from 'class-transformer'
 import { applyGlobalConfig } from '@/global-config'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
@@ -144,7 +142,11 @@ describe('UsersController e2e tests', () => {
         .send(Object.assign(signinDto, { password: 'wrong pass' }))
         .expect(400)
 
-      console.log(res.body)
+      expect(res.body).toStrictEqual({
+        statusCode: 400,
+        error: 'Invalid Credentials Error',
+        message: 'Invalid credentials',
+      })
     })
   })
 })
