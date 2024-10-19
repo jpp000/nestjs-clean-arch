@@ -6,7 +6,7 @@ import { EnvConfigService } from '@/shared/infraestructure/env-config/env-config
 
 @Module({
   imports: [
-    EnvConfigModule.forRoot(),
+    EnvConfigModule,
     JwtModule.registerAsync({
       imports: [EnvConfigModule],
       useFactory: async (configService: EnvConfigService) => ({
