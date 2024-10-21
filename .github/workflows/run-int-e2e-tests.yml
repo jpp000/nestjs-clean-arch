@@ -3,7 +3,7 @@ name: CI - Int and E2E Tests
 on: [pull_request]
 
 jobs:
-  run-unit-tests:
+  run-int-e2e-tests:
     name: Run Int and E2E Tests
     runs-on: ubuntu-latest
 
